@@ -1,0 +1,34 @@
+import info.gridworld.actor.Actor;
+
+public class Jumper extends Actor
+{
+    private int steps;
+    private int sideLength;
+
+    /**
+     * use two parameter to describe the jumping message.
+     * @param jumpnum how many jump the Jumper do in this move (most is 2 now)
+     */
+    private int jumpnum;
+    /**
+     * Constructs a Jumper that traces a square of a given side length
+     * @param length the side length
+     */
+    public Jumper(int length)
+    {
+        steps = 0;
+        sideLength = length;
+        jumpnum = 0;
+        jumping = false;
+    }
+
+    /**
+     * Use jump
+     * If the jumper can jump, it jump
+     * If the jumper can't jump, it rotate to another direction.
+     */
+    public void act()
+    {
+        
+    }
+}
