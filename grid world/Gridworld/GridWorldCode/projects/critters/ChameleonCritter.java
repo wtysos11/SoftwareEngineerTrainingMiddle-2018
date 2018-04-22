@@ -21,14 +21,15 @@ import info.gridworld.actor.Critter;
 import info.gridworld.grid.Location;
 
 import java.util.ArrayList;
-
+import java.awt.Color;
 /**
  * A <code>ChameleonCritter</code> takes on the color of neighboring actors as
  * it moves through the grid. <br />
  * The implementation of this class is testable on the AP CS A and AB exams.
  */
 public class ChameleonCritter extends Critter
-{
+{   
+    private static final double DARKENING_FACTOR = 0.05;
     /**
      * Randomly selects a neighbor and changes this critter's color to be the
      * same as that neighbor's. If there are no neighbors, no action is taken.
@@ -37,7 +38,10 @@ public class ChameleonCritter extends Critter
     {
         int n = actors.size();
         if (n == 0)
+        {
+            getDark();
             return;
+        }
         int r = (int) (Math.random() * n);
 
         Actor other = actors.get(r);
@@ -51,5 +55,14 @@ public class ChameleonCritter extends Critter
     {
         setDirection(getLocation().getDirectionToward(loc));
         super.makeMove(loc);
+    }
+
+    private void getDark()
+    {
+        Color c=getColor();
+        int red = (int)(c.getRed()*DARKENING_FACTOR);
+        int green = (int)(c.getGreen()*DARKENING_FACTOR);
+        int blue = (int)(c.getBlue()*DARKENING_FACTOR);
+        setColor(new Color(red,green,blue));
     }
 }

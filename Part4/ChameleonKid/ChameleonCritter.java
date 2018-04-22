@@ -37,7 +37,9 @@ public class ChameleonCritter extends Critter
     public void processActors(ArrayList<Actor> actors)
     {
         if(actors == null)
+        {
             return;
+        }
         int n = actors.size();
         if (n == 0)
         {

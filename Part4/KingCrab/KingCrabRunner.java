@@ -7,6 +7,12 @@ import info.gridworld.grid.Location;
 
 public class KingCrabRunner
 {
+    /*
+        build a world with rock and flower.
+        there's a Kingcrab in 4,5
+        Kingcrab can make all actors around it make far away from it.
+        If they can't move far away, they will be destroyed.
+    */
     public static void main(String[] args)
     {
         ActorWorld world = new ActorWorld();

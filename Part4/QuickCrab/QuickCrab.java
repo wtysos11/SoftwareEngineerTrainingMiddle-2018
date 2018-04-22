@@ -18,17 +18,27 @@ public class QuickCrab extends CrabCritter
         Grid<Actor> gr = getGrid();
         Location loc = getLocation();
     
+    /*
+        add get All get valid location to locs and pass it to other method.
+        like neighbour
+    */
         for (int d : directions)
         {
             Location neighborLoc = loc.getAdjacentLocation(getDirection() + d);
             if (gr.isValid(neighborLoc))
+            {
                 locs.add(neighborLoc);
+            }
             else
+            {
             	continue;
+            }
             //the second step
             Location nextLoc = neighborLoc.getAdjacentLocation(getDirection() + d);
                 if (gr.isValid(nextLoc))
-                locs.add(nextLoc);
+                {
+                     locs.add(nextLoc);   
+                }
         }
         return locs;
     }    

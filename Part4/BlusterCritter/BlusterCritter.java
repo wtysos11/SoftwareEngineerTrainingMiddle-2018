@@ -8,6 +8,7 @@ import java.awt.Color;
 public class BlusterCritter extends Critter 
 {
     private static final double COLOR_FACTOR = 0.20;
+    private static final int COLORLMIT = 255;
     private int _count;
     public BlusterCritter(int count)
     {
@@ -23,54 +24,11 @@ public class BlusterCritter extends Critter
         Grid<Actor> gr=getGrid();
 
         Location loc = getLocation();
-        /*
-        Location left,right,up,bottom;
-        int leftm=0,rightm=0,upm=0,bottomm=0;
-        //calculate range of valid search.
-        left = loc.getAdjacentLocation(Location.WEST);
-        if(gr.isValid(left))
-        {
-            leftm=-1;
-        }
-        left = left.getAdjacentLocation(Location.WEST);
-        if(gr.isValid(left))
-        {
-            leftm=-2;
-        }
-
-        right = loc.getAdjacentLocation(Location.EAST);
-        if(gr.isValid(right))
-        {
-            rightm=1;
-        }
-        right = right.getAdjacentLocation(Location.EAST);
-        if(gr.isValid(right))
-        {
-            rightm=2;
-        }
-
-        up = loc.getAdjacentLocation(Location.NORTH);
-        if(gr.isValid(up))
-        {
-            upm=-1;
-        }
-        up = up.getAdjacentLocation(Location.NORTH);
-        if(gr.isValid(up))
-        {
-            upm=-2;
-        }
-
-        bottom = loc.getAdjacentLocation(Location.SOUTH);
-        if(gr.isValid(bottom))
-        {
-            bottomm=1;
-        }
-        bottom = bottom.getAdjacentLocation(Location.SOUTH);
-        if(gr.isValid(bottom))
-        {
-            bottomm=2;
-        }*/
-
+/*
+    a loop that check all 24 cells aournd location to find whether it is available.
+    ps: notice not to include itself
+    if available, add to the list and return.
+*/
         for(int i=-2;i<=2;i++)
         {
             for(int j=-2;j<=2;j++)
@@ -80,7 +38,9 @@ public class BlusterCritter extends Critter
                     if location is not valid, or the location is origin, then it can't be a neighbor
                 */
                 if(!gr.isValid(newLoc)||(i==0&&j==0))
+                {
                     continue;
+                }
 
                 if(gr.get(newLoc)!=null)
                 {
@@ -97,6 +57,10 @@ public class BlusterCritter extends Critter
     public void act()
     {
         ArrayList<Actor> actors = getActors();
+        /*
+            make rgb's value low can make them dark.
+            But make rgb's value high seems not make them bright.
+        */
         if(actors.size()>=_count)
         {
             Color c=getColor();
@@ -111,12 +75,21 @@ public class BlusterCritter extends Critter
             int red = (int)(c.getRed()*(1+COLOR_FACTOR ));
             int green = (int)(c.getGreen()*(1+COLOR_FACTOR ));
             int blue = (int)(c.getBlue()*(1+COLOR_FACTOR ));
-            if(red>255)
-                red=255;
-            if(green>255)
-                green=255;
-            if(blue>255)
-                blue=255;
+            /*
+                if rgb's value is greater than 255,then there will be an error. The color won't chagne.
+            */
+            if(red>COLORLMIT)
+            {
+                red=COLORLMIT;
+            }
+            if(green>COLORLMIT)
+            {
+                green=COLORLMIT;
+            }
+            if(blue>COLORLMIT)
+            {
+                blue=COLORLMIT;
+            }
             setColor(new Color(red,green,blue));
         }
     }

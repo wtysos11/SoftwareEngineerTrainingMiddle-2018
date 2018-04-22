@@ -1,4 +1,0 @@
-INDEX VERSION 1.126+/home/administrator/Desktop/homework/Part2/.metadata/.plugins/org.eclipse.jdt.core
-575321364.index
-75597551.index
-3316993876.index

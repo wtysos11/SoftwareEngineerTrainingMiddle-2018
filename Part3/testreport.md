@@ -55,15 +55,15 @@ description: When the jumper has nothing near, it should move.
         alice.setColor(Color.ORANGE);
         world.add(new Location(2, 0), alice);
         alice.act();
-        assertEquals(alice.getLocation(),new Location(1,0));
+        assertEquals(alice.getLocation(),new Location(0,0));
 	}
 ```
 ### 5.test edge move
 description: When a jumper is near the edge, it should act like a BoxBug.
 ```
-	@Test
-	public void testEdgeMove()
-	{
+        @Test
+        public void testEdgeMove()
+        {
         ActorWorld world = new ActorWorld();
         Jumper alice = new Jumper(6);
         alice.setColor(Color.ORANGE);
@@ -71,6 +71,6 @@ description: When a jumper is near the edge, it should act like a BoxBug.
         alice.act();
         alice.act();
         alice.act();
-        assertEquals(alice.getLocation(),new Location(0,1));
-	}
+        assertEquals(alice.getLocation(),new Location(0,2));
+        }
 ```

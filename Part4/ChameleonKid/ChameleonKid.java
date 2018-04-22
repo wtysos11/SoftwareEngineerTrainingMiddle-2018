@@ -4,6 +4,10 @@ import info.gridworld.grid.Grid;
 import java.util.ArrayList;
 public class ChameleonKid extends ChameleonCritter 
 {
+    /*
+        set the actor's color to the color of its front or back.
+        If there's no element in its front or back, then the color gets dark.
+    */
     public void processActors(ArrayList<Actor> actors)
     {
         int n = actors.size();
