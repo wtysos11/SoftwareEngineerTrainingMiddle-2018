@@ -22,32 +22,40 @@ import info.gridworld.grid.Location;
 
 import java.util.ArrayList;
 import java.awt.Color;
+
 /**
  * A <code>ChameleonCritter</code> takes on the color of neighboring actors as
  * it moves through the grid. <br />
  * The implementation of this class is testable on the AP CS A and AB exams.
  */
 public class ChameleonCritter extends Critter
-{   
-    private static final double DARKENING_FACTOR = 0.15;
+{
+	//darker factor just like other
+	private static final double DARKEN_FACTOR = 0.15;
+	
     /**
      * Randomly selects a neighbor and changes this critter's color to be the
      * same as that neighbor's. If there are no neighbors, no action is taken.
      */
     public void processActors(ArrayList<Actor> actors)
     {
-        if(actors == null)
-            return;
         int n = actors.size();
         if (n == 0)
         {
-            getDark();
-            return;
+        	Color c=getColor();
+        	int red = (int)(c.getRed()*(1-DARKEN_FACTOR));
+        	int green = (int)(c.getGreen()*(1-DARKEN_FACTOR));
+        	int blue = (int)(c.getBlue()*(1-DARKEN_FACTOR));
+        	
+        	setColor(new Color(red,green,blue));
         }
-        int r = (int) (Math.random() * n);
+        else
+        {
+            int r = (int) (Math.random() * n);
+            Actor other = actors.get(r);
+            setColor(other.getColor());
+        }
 
-        Actor other = actors.get(r);
-        setColor(other.getColor());
     }
 
     /**
@@ -57,14 +65,5 @@ public class ChameleonCritter extends Critter
     {
         setDirection(getLocation().getDirectionToward(loc));
         super.makeMove(loc);
-    }
-
-    protected void getDark()
-    {
-        Color c=getColor();
-        int red = (int)(c.getRed()*(1-DARKENING_FACTOR));
-        int green = (int)(c.getGreen()*(1-DARKENING_FACTOR));
-        int blue = (int)(c.getBlue()*(1-DARKENING_FACTOR));
-        setColor(new Color(red,green,blue));
     }
 }

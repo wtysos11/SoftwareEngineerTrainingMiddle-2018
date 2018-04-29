@@ -11,15 +11,15 @@ public class RockHound extends Critter
         if (n == 0)
         {
             return;
+            //if there's no actor, let it return.
         }
-        Grid<Actor> gr = getGrid();
-        for(Actor actor : actors)
+        /*
+        * remove all the rock using tag to identify
+        */
+        for (Actor a : actors)
         {
-            Location loc = actor.getLocation();
-            if(actor.getClass().getName()=="info.gridworld.actor.Rock")
-            {
-                actor.removeSelfFromGrid();
-            }
+            if (a instanceof Rock)
+                a.removeSelfFromGrid();
         }
     }
 

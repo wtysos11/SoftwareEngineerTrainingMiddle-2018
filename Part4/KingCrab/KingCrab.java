@@ -2,7 +2,6 @@ import info.gridworld.actor.Actor;
 import info.gridworld.actor.Critter;
 import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
-
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -20,36 +19,34 @@ public class KingCrab extends CrabCritter
     */
     public void processActors(ArrayList<Actor> actors)
     {
-        System.out.println("In function processActors");
-        Grid<Actor> gr=getGrid();
+        Grid gr = getGrid();
         Location loc = getLocation();
-        System.out.println("location is "+loc.toString());
-        for(Actor a : actors)
+
+        for (Actor a : actors)
         {
-            System.out.println(a.toString());
-            /*
-                make a line that points from KingCrab to a, then check whether actors can go to the cell on that line step 1 from actor. If not, remove
-            */
-            Location aLoc = a.getLocation();
-            Location next = aLoc.getAdjacentLocation(countDirection(loc,aLoc));/*
-            System.out.println("actor location: "+aLoc.toString());
-            System.out.println("next location: "+next.toString());
-            System.out.println("direction:"+countDirection(loc,aLoc));*/
-            if(gr.isValid(next))
+            if (!(a instanceof Critter))
             {
-                a.moveTo(next);
-            }
-            else
-            {
-                a.removeSelfFromGrid();
+                Location eleLoc = a.getLocation();
+                int direction = countDirection(loc,eleLoc);
+                Location aimLoc = eleLoc.getAdjacentLocation(direction);
+                
+                //judge whether can move. If can't move, then remove this.
+                if (gr.isValid(aimLoc)) 
+                {
+                    a.moveTo(aimLoc);
+                } 
+                else 
+                {
+                    a.removeSelfFromGrid();
+                }
             }
         }
     }
-    
     protected int countDirection(Location origin,Location dest)
     {
         int rowNum = dest.getRow()-origin.getRow();
         int colNum = dest.getCol()-origin.getCol();
+        //on the top
         if(rowNum == -1)
         {
             if(colNum == -1)
@@ -65,6 +62,7 @@ public class KingCrab extends CrabCritter
                 return Location.NORTHEAST;
             }
         }
+        //on that line
         else if(rowNum == 0)
         {
             if(colNum == -1)
@@ -77,6 +75,7 @@ public class KingCrab extends CrabCritter
             }
 
         }
+        //on the bottom
         else
         {
             if(colNum == -1)

@@ -7,6 +7,10 @@ import info.gridworld.grid.Location;
 
 public class QuickCrabRunner
 {
+    /*
+        there's three quickcrab in this map.
+        Quickcrab acts just like normal crab, except they can run two cells if the cells in their moving direction is emtpy.
+    */
     public static void main(String[] args)
     {
         ActorWorld world = new ActorWorld();

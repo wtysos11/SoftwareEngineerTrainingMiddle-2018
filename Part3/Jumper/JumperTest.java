@@ -1,8 +1,11 @@
-# testreport for Part3 Jumper
-## statement
-### 1. jump over rock
-description: This test is about whether the jumper can jump over the rock and move to the correction location.
-```
+import static org.junit.Assert.*;
+import org.junit.Test;
+import info.gridworld.actor.ActorWorld;
+import info.gridworld.grid.Location;
+import info.gridworld.actor.Rock;
+import java.awt.Color;
+
+public class JumperTest {
 	@Test
 	public void testRockMove()
 	{
@@ -14,10 +17,7 @@ description: This test is about whether the jumper can jump over the rock and mo
         alice.act();
         assertEquals(alice.getLocation(),new Location(5,8));
 	}
-```
-### 2.test rock not move
-description: When there is a rock near and edge two cells from the jumper, the jumper shouldn't move.
-```
+	
 	@Test
 	public void testRockNotMove()
 	{
@@ -29,10 +29,6 @@ description: When there is a rock near and edge two cells from the jumper, the j
         alice.act();
         assertEquals(alice.getLocation(),new Location(1,0));
 	}
-```
-### 3.test empty not move
-description: When the jumper is at the corner and has edge near, it shouldn't mvoe.
-```
 	@Test
 	public void testEmptyNotMove()
 	{
@@ -43,10 +39,6 @@ description: When the jumper is at the corner and has edge near, it shouldn't mv
         alice.act();
         assertEquals(alice.getLocation(),new Location(0,0));
 	}
-```
-### 4.test empty move
-description: When the jumper has nothing near, it should move.
-```
 	@Test
 	public void testEmptyMove()
 	{
@@ -57,13 +49,9 @@ description: When the jumper has nothing near, it should move.
         alice.act();
         assertEquals(alice.getLocation(),new Location(0,0));
 	}
-```
-### 5.test edge move
-description: When a jumper is near the edge, it should act like a BoxBug.
-```
-        @Test
-        public void testEdgeMove()
-        {
+	@Test
+	public void testEdgeMove()
+	{
         ActorWorld world = new ActorWorld();
         Jumper alice = new Jumper(6);
         alice.setColor(Color.ORANGE);
@@ -72,5 +60,5 @@ description: When a jumper is near the edge, it should act like a BoxBug.
         alice.act();
         alice.act();
         assertEquals(alice.getLocation(),new Location(0,2));
-        }
-```
+	}
+}
