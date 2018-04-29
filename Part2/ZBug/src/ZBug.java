@@ -5,18 +5,19 @@ public class ZBug extends Bug
 {
     private int steps;
     private int sideLength;
-    private boolean begin;
     private int process;
+	private boolean goon;
     /**
      * Constructs a box bug that traces a square of a given side length
      * @param length the side length
      */
     public ZBug(int length)
     {
-    	begin = false;
+		goon = true;
         steps = 0;
         process = 0;
         sideLength = length;
+		setDirection(Location.EAST);
     }
 
     /**
@@ -24,21 +25,18 @@ public class ZBug extends Bug
      */
     public void act()
     {
-    	if(begin == false)
-    	{
-    		begin = true;
-    		setDirection(Location.EAST);
-    	}
     	
-    	if(steps < sideLength && canMove())
+    	if(steps < sideLength && canMove() && goon==true)
     	{
     		move();
     		steps++;
     	}
-    	else
+    	else if(goon == true)
     	{
-    		if(canMove() == false || process > 2)
+			//如果没有走到指定步数就不能移动，或者超过过程
+    		if(process>2 || (!canMove()&&steps<sideLength))
     		{
+				goon = false;
     			return;
     		}
     		
