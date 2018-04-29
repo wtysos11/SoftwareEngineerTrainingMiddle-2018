@@ -12,9 +12,6 @@ import java.awt.Color;
 
 public class Jumper extends Actor
 {
-	/*
-	  I don't use sideLength because this is very annoying and will make the action confusing.
-	*/
 	public Jumper()
 	{
 		setColor(Color.RED);
@@ -79,11 +76,6 @@ public class Jumper extends Actor
     	return (neighbor==null)||(neighbor instanceof Flower);
     }
 	
-	/*
-	In my opinion ,every jump method should be called after calling an canJump method.
-	So if there's a mistake, it will throw an error to inform the programmer.
-	And I really can't understand the part that removeSelfFromGrid in the method move. Maybe it's in case of some strange situation?
-	*/
     public void jump()
     {
     	Grid<Actor> gr = getGrid();
