@@ -33,7 +33,7 @@ public class MazeBugRunner
         world.add(new Location(4,3), new Rock());
         world.add(new Location(4,4), new Rock());
         world.add(new Location(5,2), new Rock());
-        world.add(new Location(1,1), new MazeBug());
+        world.add(new Location(1,1), new BasicMazeBug());
         //world.add(new Location(2,2), new MazeBug2());
         world.show();
     }

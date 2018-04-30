@@ -9,34 +9,20 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
-public class MazeBug extends Bug
+public class BasicMazeBug extends Bug
 {
 	public int stepLength;//已经走过的步数
-	private boolean[][] isVisit;//是否访问过
-	
-	//所有关于这两个栈的操作应该统一在act及与其直接关联的方法中进行，以保证数据统一。
-	Stack<Location> cache;//栈，用来存储当前层已经走过的位置
-	Stack<Stack<Location>> branch;//用来保存DFS栈中前面几层的信息
 	
 	Location next;//store the next location to go
 	Location last;//上一个位置
 	boolean judgeEnd;//判断是否走到终点
 	
-	public MazeBug()
+	public BasicMazeBug()
 	{
 		int length = 100;
-		isVisit = new boolean[length][length];
-		for(int i=0;i<length;i++)
-		{
-			for(int j=0;j<length;j++)
-			{
-				isVisit[i][j]=false;
-			}
-		}
+
 		
 		stepLength = 0;
-		cache = new Stack<Location>();
-		branch = new Stack<Stack<Location>>();
 		judgeEnd = false;
 		
 		//gridworld is not the newest and location is null at the beginning.
@@ -67,7 +53,8 @@ public class MazeBug extends Bug
         }
         else
         {
-            turnBack();	
+            turn();
+            turn();
             stepLength++;
         }
 
@@ -91,8 +78,6 @@ public class MazeBug extends Bug
         if (gr.isValid(next))
         {
         	setDirection(loc.getDirectionToward(next));//调整方向
-        	isVisit[next.getRow()][next.getCol()] = true;
-        	//cache.push(getLocation());//不能在move方法里面修改cache，因为在turnBack中会调用move方法。
             moveTo(next);
         }
         else
@@ -120,6 +105,8 @@ public class MazeBug extends Bug
         Grid<Actor> gr = getGrid();
         int[] directions = {Location.AHEAD, Location.RIGHT, Location.LEFT, Location.HALF_CIRCLE};
         
+        //System.out.println("In function getValidLocation.");
+        
         for (int d : directions)
         {
             Location neighborLoc = loc.getAdjacentLocation(d);
@@ -134,9 +121,10 @@ public class MazeBug extends Bug
             if (gr.isValid(neighborLoc))
             {
             	Actor actor = gr.get(neighborLoc);
-            	if((actor==null||actor instanceof Flower) && !isVisit[neighborLoc.getRow()][neighborLoc.getCol()])
+            	if((actor==null||actor instanceof Flower))
             	{
             		validList.add(neighborLoc);
+            		//System.out.println("In valid list: "+neighborLoc.toString());
             	}
             	//judge whether to end.
             	else if(actor instanceof Rock)
@@ -169,14 +157,6 @@ public class MazeBug extends Bug
         {
         	return false;
         }
-        //存在多余一个分支
-        else if(list.size()>1)
-        {
-        	branch.push(cache);
-        	cache = new Stack<Location>();
-        }
-        
-        cache.add(getLocation());
         
         int random = (int)(Math.random()*(list.size()));
         next = list.get(random);
@@ -188,17 +168,5 @@ public class MazeBug extends Bug
     /*
      * 逐步清空，走到DFS树的上一层的最后一个分界点。
      * */
-    public void turnBack()
-    {
-    	if(!cache.empty())
-    	{
-    		next = cache.pop();
-    		move();
-    	}
-    	
-    	if(cache.empty())//当前栈被清空了
-    	{
-    		cache = branch.pop();    		
-    	}
-    }
+
 }
