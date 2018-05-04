@@ -9,60 +9,60 @@ import javax.imageio.ImageIO;
 import imagereader.IImageIO;
 import java.awt.Graphics2D;
 public class ImplementImageIO implements IImageIO{
-	private static final int BYTE_HEAD=14;//bmpÎÄ¼şÍ·0-13Î»
-	private static final int BYTE_INFO=40;//bmpĞÅÏ¢²¿·Ö14-53Î»
+	private static final int BYTE_HEAD=14;//bmpæ–‡ä»¶å¤´0-13ä½
+	private static final int BYTE_INFO=40;//bmpä¿¡æ¯éƒ¨åˆ†14-53ä½
 	
-	private static final int MULTI_COLOR=24;//²ÊÉ«£¬24Î»
-	private static final int GRAY=8;//»Ò½×£¬8Î»
-	private static final int FOUR_BYTE=4;//ÒâÒå²»Ã÷
+	private static final int MULTI_COLOR=24;//å½©è‰²ï¼Œ24ä½
+	private static final int GRAY=8;//ç°é˜¶ï¼Œ8ä½
+	private static final int FOUR_BYTE=4;//æ„ä¹‰ä¸æ˜
 	
-	private int bitInfo;//28-29 Î»Í¼Í¼ÏñÎ»Êı
+	private int bitInfo;//28-29 ä½å›¾å›¾åƒä½æ•°
 	
 	public Image myRead(String str) throws IOException
 	{
 		//System.out.println("Show path:"+str);
 		FileInputStream inputStream = new FileInputStream(str);
-		byte bmpHead[] = new byte[BYTE_HEAD];//bmpÎÄ¼şÍ·
-		byte bmpInfo[] = new byte[BYTE_INFO];//bmpÎÄ¼şĞÅÏ¢
+		byte bmpHead[] = new byte[BYTE_HEAD];//bmpæ–‡ä»¶å¤´
+		byte bmpInfo[] = new byte[BYTE_INFO];//bmpæ–‡ä»¶ä¿¡æ¯
 		byte originData[];
 		int RGBdata[];
 		
-		int offset;//10-13 Î»Í¼Êı¾İÆ«ÒÆÁ¿£¬¼´ÆğÊ¼µØÖ·
-		int height;//22-25Î»Í¼µÄ¸ß¶È
-		int width;//18-21 Î»Í¼µÄ¿í¶È
-		int imageSize;//34-37 Ô­Ê¼µÄÎ»Í¼´óĞ¡
+		int offset;//10-13 ä½å›¾æ•°æ®åç§»é‡ï¼Œå³èµ·å§‹åœ°å€
+		int height;//22-25ä½å›¾çš„é«˜åº¦
+		int width;//18-21 ä½å›¾çš„å®½åº¦
+		int imageSize;//34-37 åŸå§‹çš„ä½å›¾å¤§å°
 
-		int zero;//Ã¿ĞòÁĞ¿Õ×Ö½Ú´óĞ¡
+		int zero;//æ¯åºåˆ—ç©ºå­—èŠ‚å¤§å°
 		Image image = null;
 		
 		try{
-			//¶ÁÈ¡ÎÄ¼şÍ·²¿ĞÅÏ¢
+			//è¯»å–æ–‡ä»¶å¤´éƒ¨ä¿¡æ¯
 			inputStream.read(bmpHead,0,BYTE_HEAD);
 			inputStream.read(bmpInfo,0,BYTE_INFO);
 			
-			//offset¼ÆËã
+			//offsetè®¡ç®—
 			offset = byteChangeToInt(bmpHead[13],bmpHead[12],bmpHead[11],bmpHead[10]);
 						
-			//bitinfo Í¼ÏñÎ»Êı¼ÆËã£¬Ò»°ãÎª24Î»(²ÊÉ«)»ò8Î»
+			//bitinfo å›¾åƒä½æ•°è®¡ç®—ï¼Œä¸€èˆ¬ä¸º24ä½(å½©è‰²)æˆ–8ä½
 			bitInfo = (((int)bmpInfo[15] & 0xff)<<8)|((int)bmpInfo[14] & 0xff);
 			
-			//Î»Í¼¿í¶È
+			//ä½å›¾å®½åº¦
 			width = byteChangeToInt(bmpInfo[7],bmpInfo[6],bmpInfo[5],bmpInfo[4]);
-			//Î»Í¼¸ß¶È
+			//ä½å›¾é«˜åº¦
 			
 			height = byteChangeToInt(bmpInfo[11],bmpInfo[10],bmpInfo[9],bmpInfo[8]);
 			
-			//¼ÆËãÔ­Ê¼´óĞ¡
+			//è®¡ç®—åŸå§‹å¤§å°
 			imageSize = byteChangeToInt(bmpInfo[23],bmpInfo[22],bmpInfo[21],bmpInfo[20]);
 			
 			zero = (imageSize/height) - width*3;
 			originData = new byte[imageSize];
 			
-			//»ñÈ¡Ô­Ê¼originData
+			//è·å–åŸå§‹originData
 			inputStream.read(originData,0,imageSize);
 			RGBdata = new int[height*width];
-			//¶ÔrgbÖµ½øĞĞ×ª»»
-			//×¢Òâ£ºÔ­Ê¼´æ´¢·½Ê½ÓÉÏÂµ½ÉÏ£¬ÓÉ×óµ½ÓÒ£¬ĞèÒª½øĞĞ×ª»»
+			//å¯¹rgbå€¼è¿›è¡Œè½¬æ¢
+			//æ³¨æ„ï¼šåŸå§‹å­˜å‚¨æ–¹å¼ç”±ä¸‹åˆ°ä¸Šï¼Œç”±å·¦åˆ°å³ï¼Œéœ€è¦è¿›è¡Œè½¬æ¢
 			int index = offset - 54;		
 			for(int j=0;j<height;j++)
 			{
@@ -89,12 +89,12 @@ public class ImplementImageIO implements IImageIO{
 		{
             int height = image.getHeight(null);
             int width = image.getWidth(null);
-            // ´´½¨Í¼Æ¬
+            // åˆ›å»ºå›¾ç‰‡
             BufferedImage bitImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
             Graphics2D bGr = bitImage.createGraphics();
             bGr.drawImage(image, 0, 0, null);
             bGr.dispose();
-            // ´ò¿ªÎÄ¼ş
+            // æ‰“å¼€æ–‡ä»¶
             File newFile= new File(file + ".bmp");
             ImageIO.write(bitImage, "bmp", newFile);
         } 
@@ -106,8 +106,8 @@ public class ImplementImageIO implements IImageIO{
 		return image;
 	}
 	/*
-	 * 4×Ö½Úbyte×ªint£¬¸ßÎ»ÔÚÇ°£¬µÍÎ»ÔÚºó
-	 * ÒòÎªÊ®·Ö³£¼û£¬×öÁË¸öº¯Êı
+	 * 4å­—èŠ‚byteè½¬intï¼Œé«˜ä½åœ¨å‰ï¼Œä½ä½åœ¨å
+	 * å› ä¸ºååˆ†å¸¸è§ï¼Œåšäº†ä¸ªå‡½æ•°
 	 * */
 	private int byteChangeToInt(byte byte1,byte byte2,byte byte3,byte byte4) {  
         int int1 = ((int)byte1&0xff)<<24;  

@@ -10,28 +10,28 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 /*
- * Ê¹ÓÃÒ»¸öÕ»£¨ÓëbranchÀàËÆ£©À´¼ÇÂ¼Ã¿Ò»¸ö½ÚµãÑ¡ÔñÊ±µÄ·½ÏòĞÅÏ¢
- * Èç¹ûËµÕâ¸ö·½Ïò×ß²»Í¨£¬Ôòµ±Ç°·½ÏòĞÅÏ¢¶ÔÓ¦µÄ¸ÅÂÊ¼õ1£¬½«µ±Ç°·½ÏòĞÅÏ¢¶¨ÒåÎª·µ»Ø×´Ì¬
- * Èç¹ûÔÚ·µ»Ø×´Ì¬ĞèÒª¼ÌĞø·µ»Ø£¬Ôò´ÓÕ»ÖĞÌáÈ¡Ïà¹ØµÄ·½ÏòĞÅÏ¢£¬½«Æä¶ÔÓ¦¸ÅÂÊ¼õ1£¬¼ÌĞø·µ»Ø
+ * ä½¿ç”¨ä¸€ä¸ªæ ˆï¼ˆä¸branchç±»ä¼¼ï¼‰æ¥è®°å½•æ¯ä¸€ä¸ªèŠ‚ç‚¹é€‰æ‹©æ—¶çš„æ–¹å‘ä¿¡æ¯
+ * å¦‚æœè¯´è¿™ä¸ªæ–¹å‘èµ°ä¸é€šï¼Œåˆ™å½“å‰æ–¹å‘ä¿¡æ¯å¯¹åº”çš„æ¦‚ç‡å‡1ï¼Œå°†å½“å‰æ–¹å‘ä¿¡æ¯å®šä¹‰ä¸ºè¿”å›çŠ¶æ€
+ * å¦‚æœåœ¨è¿”å›çŠ¶æ€éœ€è¦ç»§ç»­è¿”å›ï¼Œåˆ™ä»æ ˆä¸­æå–ç›¸å…³çš„æ–¹å‘ä¿¡æ¯ï¼Œå°†å…¶å¯¹åº”æ¦‚ç‡å‡1ï¼Œç»§ç»­è¿”å›
  * 
- * Â·¾¶Ñ¡ÔñµÄÓÅÏÈ³Ì¶ÈÊÜµ½Õâ¸ö¸ÅÂÊµÄÓ°Ïì¡£
+ * è·¯å¾„é€‰æ‹©çš„ä¼˜å…ˆç¨‹åº¦å—åˆ°è¿™ä¸ªæ¦‚ç‡çš„å½±å“ã€‚
  * */
 public class MazeBug2 extends Bug
 {
 	
-	public int stepLength;//ÒÑ¾­×ß¹ıµÄ²½Êı
-	private boolean[][] isVisit;//ÊÇ·ñ·ÃÎÊ¹ı
+	public int stepLength;//å·²ç»èµ°è¿‡çš„æ­¥æ•°
+	private boolean[][] isVisit;//æ˜¯å¦è®¿é—®è¿‡
 	
-	//ËùÓĞ¹ØÓÚÕâÁ½¸öÕ»µÄ²Ù×÷Ó¦¸ÃÍ³Ò»ÔÚact¼°ÓëÆäÖ±½Ó¹ØÁªµÄ·½·¨ÖĞ½øĞĞ£¬ÒÔ±£Ö¤Êı¾İÍ³Ò»¡£
-	Stack<Location> cache;//Õ»£¬ÓÃÀ´´æ´¢µ±Ç°²ãÒÑ¾­×ß¹ıµÄÎ»ÖÃ
-	Stack<Stack<Location>> branch;//ÓÃÀ´±£´æDFSÕ»ÖĞÇ°Ãæ¼¸²ãµÄĞÅÏ¢
-	Stack<Integer> influence;//±£´æ½áµãµÄÑ¡ÔñĞÅÏ¢£¬¿ÉÑ¡Öµ£ºÇ°0ºó1×ó2ÓÒ3
-	int[] probability;//1Î¬4ÔªËØÊı×é£¬±£´æ¸÷¸ö·½ÏòÉÏµÄ¸ÅÂÊ
+	//æ‰€æœ‰å…³äºè¿™ä¸¤ä¸ªæ ˆçš„æ“ä½œåº”è¯¥ç»Ÿä¸€åœ¨actåŠä¸å…¶ç›´æ¥å…³è”çš„æ–¹æ³•ä¸­è¿›è¡Œï¼Œä»¥ä¿è¯æ•°æ®ç»Ÿä¸€ã€‚
+	Stack<Location> cache;//æ ˆï¼Œç”¨æ¥å­˜å‚¨å½“å‰å±‚å·²ç»èµ°è¿‡çš„ä½ç½®
+	Stack<Stack<Location>> branch;//ç”¨æ¥ä¿å­˜DFSæ ˆä¸­å‰é¢å‡ å±‚çš„ä¿¡æ¯
+	Stack<Integer> influence;//ä¿å­˜ç»“ç‚¹çš„é€‰æ‹©ä¿¡æ¯ï¼Œå¯é€‰å€¼ï¼šå‰0å1å·¦2å³3
+	int[] probability;//1ç»´4å…ƒç´ æ•°ç»„ï¼Œä¿å­˜å„ä¸ªæ–¹å‘ä¸Šçš„æ¦‚ç‡
 	int curDir;
 	
 	Location next;//store the next location to go
-	Location last;//ÉÏÒ»¸öÎ»ÖÃ
-	boolean judgeEnd;//ÅĞ¶ÏÊÇ·ñ×ßµ½ÖÕµã
+	Location last;//ä¸Šä¸€ä¸ªä½ç½®
+	boolean judgeEnd;//åˆ¤æ–­æ˜¯å¦èµ°åˆ°ç»ˆç‚¹
 	
 	public MazeBug2()
 	{
@@ -111,9 +111,9 @@ public class MazeBug2 extends Bug
 //next should be decided in canMove method.
         if (gr.isValid(next))
         {
-        	setDirection(loc.getDirectionToward(next));//µ÷Õû·½Ïò
+        	setDirection(loc.getDirectionToward(next));//è°ƒæ•´æ–¹å‘
         	isVisit[next.getRow()][next.getCol()] = true;
-        	//cache.push(getLocation());//²»ÄÜÔÚmove·½·¨ÀïÃæĞŞ¸Äcache£¬ÒòÎªÔÚturnBackÖĞ»áµ÷ÓÃmove·½·¨¡£
+        	//cache.push(getLocation());//ä¸èƒ½åœ¨moveæ–¹æ³•é‡Œé¢ä¿®æ”¹cacheï¼Œå› ä¸ºåœ¨turnBackä¸­ä¼šè°ƒç”¨moveæ–¹æ³•ã€‚
             moveTo(next);
         }
         else
@@ -192,7 +192,7 @@ public class MazeBug2 extends Bug
             {
             	return false;
             }
-            //´æÔÚ¶àÓàÒ»¸ö·ÖÖ§
+            //å­˜åœ¨å¤šä½™ä¸€ä¸ªåˆ†æ”¯
             else if(list.size()>=2)
             {
             	branch.push(cache);
@@ -212,16 +212,16 @@ public class MazeBug2 extends Bug
             }
             last = getLocation();
             
-            //ÔÚ·ÖÖ§µãµÄÇé¿öÏÂ£¬¶Ô¸ÅÂÊ½øĞĞĞŞÕı¡£
+            //åœ¨åˆ†æ”¯ç‚¹çš„æƒ…å†µä¸‹ï¼Œå¯¹æ¦‚ç‡è¿›è¡Œä¿®æ­£ã€‚
             if(list.size()>1)
             {
                 try
                 {
-                	//ËùÑ¡·½Ïò¶ÔÓ¦µÄ¸ÅÂÊÏà¼Ó£¬²¢Ñ¹Èë
+                	//æ‰€é€‰æ–¹å‘å¯¹åº”çš„æ¦‚ç‡ç›¸åŠ ï¼Œå¹¶å‹å…¥
                     int direction = loc.getDirectionToward(next);
                     influence.push(curDir);
                     probability[changeDirection2int(direction)]++;
-                    curDir=changeDirection2int(direction);//¸üĞÂµ±Ç°Çé¿ö
+                    curDir=changeDirection2int(direction);//æ›´æ–°å½“å‰æƒ…å†µ
                 }
                 catch(Exception e)
                 {
@@ -237,15 +237,15 @@ public class MazeBug2 extends Bug
     }
     
     /* 
-     * getNextLocation·½·¨£¬½ÓÊÜÒ»¸ölist£¬·µ»ØÒ»¸öÎ»ÖÃ
-     * Ê¹ÓÃÊıÖáÍ¶Ó°µÄË¼ÏëÈ¥×ö£¬Ğ§¹ûºÃºÜ¶à¡£
+     * getNextLocationæ–¹æ³•ï¼Œæ¥å—ä¸€ä¸ªlistï¼Œè¿”å›ä¸€ä¸ªä½ç½®
+     * ä½¿ç”¨æ•°è½´æŠ•å½±çš„æ€æƒ³å»åšï¼Œæ•ˆæœå¥½å¾ˆå¤šã€‚
      * */
     public Location getNextLocation(ArrayList<Location> list) throws Exception
     {
     	
     	int front=0,back=0,left=0,right=0;
     	int resultDirection;
-    	//¼ÆËã¸÷¸ö·½ÏòµÄÊµ¼ÊÈ¨Öµ£¬Ã»ÓĞÓÃµ½¼´Îª0.
+    	//è®¡ç®—å„ä¸ªæ–¹å‘çš„å®é™…æƒå€¼ï¼Œæ²¡æœ‰ç”¨åˆ°å³ä¸º0.
     	Location currentLoc = getLocation();
     	for(Location loc : list)
     	{
@@ -308,7 +308,7 @@ public class MazeBug2 extends Bug
     }
     
     /*
-     * Öğ²½Çå¿Õ£¬×ßµ½DFSÊ÷µÄÉÏÒ»²ãµÄ×îºóÒ»¸ö·Ö½çµã¡£
+     * é€æ­¥æ¸…ç©ºï¼Œèµ°åˆ°DFSæ ‘çš„ä¸Šä¸€å±‚çš„æœ€åä¸€ä¸ªåˆ†ç•Œç‚¹ã€‚
      * */
     public void turnBack()
     {
@@ -318,11 +318,11 @@ public class MazeBug2 extends Bug
     		move();
     	}
     	
-    	if(cache.empty())//µ±Ç°Õ»±»Çå¿ÕÁË
+    	if(cache.empty())//å½“å‰æ ˆè¢«æ¸…ç©ºäº†
     	{
     		cache = branch.pop();    	
     		
-    		//influenceÕ»ÓëbranchÏà¶ÔÓ¦
+    		//influenceæ ˆä¸branchç›¸å¯¹åº”
     		probability[curDir]--;
     		curDir = influence.pop();
     	}
@@ -357,7 +357,7 @@ public class MazeBug2 extends Bug
     	System.out.println("In function printAll.");
     	for(int i=0;i<4;i++)
     	{
-    		System.out.println(i+"µÄ¸ÅÂÊÎª: "+probability[i]);
+    		System.out.println(i+"çš„æ¦‚ç‡ä¸º: "+probability[i]);
     	}
     }
 }

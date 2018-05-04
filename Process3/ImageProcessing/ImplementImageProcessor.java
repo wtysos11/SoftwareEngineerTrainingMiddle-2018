@@ -7,7 +7,7 @@ import java.awt.image.ImageProducer;
 
 public class ImplementImageProcessor implements IImageProcessor {
 
-	//rgbÖµ¹¹³É ff + r + g + b
+	//rgbå€¼æ„æˆ ff + r + g + b
     class RedImageFilter extends RGBImageFilter {
         public final int filterRGB(final int x, final int y, final int rgb) {
             return rgb & 0xffff0000;

@@ -11,11 +11,11 @@ import java.util.Random;
 import java.util.Stack;
 public class BasicMazeBug extends Bug
 {
-	public int stepLength;//ÒÑ¾­×ß¹ıµÄ²½Êı
+	public int stepLength;//å·²ç»èµ°è¿‡çš„æ­¥æ•°
 	
 	Location next;//store the next location to go
-	Location last;//ÉÏÒ»¸öÎ»ÖÃ
-	boolean judgeEnd;//ÅĞ¶ÏÊÇ·ñ×ßµ½ÖÕµã
+	Location last;//ä¸Šä¸€ä¸ªä½ç½®
+	boolean judgeEnd;//åˆ¤æ–­æ˜¯å¦èµ°åˆ°ç»ˆç‚¹
 	
 	public BasicMazeBug()
 	{
@@ -77,7 +77,7 @@ public class BasicMazeBug extends Bug
 //next should be decided in canMove method.
         if (gr.isValid(next))
         {
-        	setDirection(loc.getDirectionToward(next));//µ÷Õû·½Ïò
+        	setDirection(loc.getDirectionToward(next));//è°ƒæ•´æ–¹å‘
             moveTo(next);
         }
         else
@@ -166,7 +166,7 @@ public class BasicMazeBug extends Bug
     }
     
     /*
-     * Öğ²½Çå¿Õ£¬×ßµ½DFSÊ÷µÄÉÏÒ»²ãµÄ×îºóÒ»¸ö·Ö½çµã¡£
+     * é€æ­¥æ¸…ç©ºï¼Œèµ°åˆ°DFSæ ‘çš„ä¸Šä¸€å±‚çš„æœ€åä¸€ä¸ªåˆ†ç•Œç‚¹ã€‚
      * */
 
 }

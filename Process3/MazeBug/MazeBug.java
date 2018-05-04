@@ -11,16 +11,16 @@ import java.util.Random;
 import java.util.Stack;
 public class MazeBug extends Bug
 {
-	public int stepLength;//ÒÑ¾­×ß¹ıµÄ²½Êı
-	private boolean[][] isVisit;//ÊÇ·ñ·ÃÎÊ¹ı
+	public int stepLength;//å·²ç»èµ°è¿‡çš„æ­¥æ•°
+	private boolean[][] isVisit;//æ˜¯å¦è®¿é—®è¿‡
 	
-	//ËùÓĞ¹ØÓÚÕâÁ½¸öÕ»µÄ²Ù×÷Ó¦¸ÃÍ³Ò»ÔÚact¼°ÓëÆäÖ±½Ó¹ØÁªµÄ·½·¨ÖĞ½øĞĞ£¬ÒÔ±£Ö¤Êı¾İÍ³Ò»¡£
-	Stack<Location> cache;//Õ»£¬ÓÃÀ´´æ´¢µ±Ç°²ãÒÑ¾­×ß¹ıµÄÎ»ÖÃ
-	Stack<Stack<Location>> branch;//ÓÃÀ´±£´æDFSÕ»ÖĞÇ°Ãæ¼¸²ãµÄĞÅÏ¢
+	//æ‰€æœ‰å…³äºè¿™ä¸¤ä¸ªæ ˆçš„æ“ä½œåº”è¯¥ç»Ÿä¸€åœ¨actåŠä¸å…¶ç›´æ¥å…³è”çš„æ–¹æ³•ä¸­è¿›è¡Œï¼Œä»¥ä¿è¯æ•°æ®ç»Ÿä¸€ã€‚
+	Stack<Location> cache;//æ ˆï¼Œç”¨æ¥å­˜å‚¨å½“å‰å±‚å·²ç»èµ°è¿‡çš„ä½ç½®
+	Stack<Stack<Location>> branch;//ç”¨æ¥ä¿å­˜DFSæ ˆä¸­å‰é¢å‡ å±‚çš„ä¿¡æ¯
 	
 	Location next;//store the next location to go
-	Location last;//ÉÏÒ»¸öÎ»ÖÃ
-	boolean judgeEnd;//ÅĞ¶ÏÊÇ·ñ×ßµ½ÖÕµã
+	Location last;//ä¸Šä¸€ä¸ªä½ç½®
+	boolean judgeEnd;//åˆ¤æ–­æ˜¯å¦èµ°åˆ°ç»ˆç‚¹
 	
 	public MazeBug()
 	{
@@ -90,9 +90,9 @@ public class MazeBug extends Bug
 //next should be decided in canMove method.
         if (gr.isValid(next))
         {
-        	setDirection(loc.getDirectionToward(next));//µ÷Õû·½Ïò
+        	setDirection(loc.getDirectionToward(next));//è°ƒæ•´æ–¹å‘
         	isVisit[next.getRow()][next.getCol()] = true;
-        	//cache.push(getLocation());//²»ÄÜÔÚmove·½·¨ÀïÃæĞŞ¸Äcache£¬ÒòÎªÔÚturnBackÖĞ»áµ÷ÓÃmove·½·¨¡£
+        	//cache.push(getLocation());//ä¸èƒ½åœ¨moveæ–¹æ³•é‡Œé¢ä¿®æ”¹cacheï¼Œå› ä¸ºåœ¨turnBackä¸­ä¼šè°ƒç”¨moveæ–¹æ³•ã€‚
             moveTo(next);
         }
         else
@@ -169,7 +169,7 @@ public class MazeBug extends Bug
         {
         	return false;
         }
-        //´æÔÚ¶àÓàÒ»¸ö·ÖÖ§
+        //å­˜åœ¨å¤šä½™ä¸€ä¸ªåˆ†æ”¯
         else if(list.size()>1)
         {
         	branch.push(cache);
@@ -186,7 +186,7 @@ public class MazeBug extends Bug
     }
     
     /*
-     * Öğ²½Çå¿Õ£¬×ßµ½DFSÊ÷µÄÉÏÒ»²ãµÄ×îºóÒ»¸ö·Ö½çµã¡£
+     * é€æ­¥æ¸…ç©ºï¼Œèµ°åˆ°DFSæ ‘çš„ä¸Šä¸€å±‚çš„æœ€åä¸€ä¸ªåˆ†ç•Œç‚¹ã€‚
      * */
     public void turnBack()
     {
@@ -196,7 +196,7 @@ public class MazeBug extends Bug
     		move();
     	}
     	
-    	if(cache.empty())//µ±Ç°Õ»±»Çå¿ÕÁË
+    	if(cache.empty())//å½“å‰æ ˆè¢«æ¸…ç©ºäº†
     	{
     		cache = branch.pop();    		
     	}
